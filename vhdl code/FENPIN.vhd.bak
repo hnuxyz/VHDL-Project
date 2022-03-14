@@ -1,0 +1,25 @@
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+USE IEEE.STD_LOGIC_ARITH.ALL;
+USE IEEE.STD_LOGIC_UNSIGNED.ALL;
+ENTITY clk_div IS
+	PORT(clkin:IN STD_LOGIC;
+		clkout:OUT STD_LOGIC);
+END clk_div;
+ARCHITECTURE clk_div_behavior OF clk_div IS
+	SIGNAL counter:STD_LOGIC_VECTOR(2 DOWNTO 0);
+	SIGNAL temp:STD_LOGIC;
+BEGIN
+	PROCESS(clkin)
+	BEGIN
+		IF(clkin'EVENT AND clkin='1')THEN
+			IF(counter="100")THEN        --注意，这里是0——4，一个周期1:1的高低电平
+				counter<="000";
+				temp<=NOT temp;
+			ELSE
+				counter<=counter+1;
+			END	IF;
+		END IF;
+	END PROCESS;
+	clkout<=temp;
+END clk_div_behavior;
